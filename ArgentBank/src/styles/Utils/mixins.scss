@@ -1,0 +1,13 @@
+// mixin for breakpoint
+
+@mixin tablet-and-more {
+  @media screen and (min-width: calc(map-get($breakpoint, tablet))) {
+    @content;
+  }
+}
+
+@mixin desktop-and-more {
+  @media screen and (min-width: map-get($breakpoint, desktop)) {
+    @content;
+  }
+}

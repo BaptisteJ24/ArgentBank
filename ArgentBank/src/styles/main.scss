@@ -1,0 +1,21 @@
+// Utils
+@import './utils/variables';
+@import './utils/functions';
+@import './utils/mixins';
+@import './utils/animations';
+
+// Base
+@import './Base/reset';
+@import './Base/shared';
+
+// Components
+@import './components/error';
+
+// Layout
+@import './layout/header';
+@import './layout/footer';
+
+// Pages
+@import './pages/home';
+@import './pages/login';
+@import './pages/profile';
