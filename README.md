@@ -1,4 +1,4 @@
-# Projet_13_ArgentBank
+# ArgentBank
 
 Front and Backend for ArgentBank - React Redux
 
