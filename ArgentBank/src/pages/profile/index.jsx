@@ -26,11 +26,11 @@ const UserProfile = () => {
           { headers: { Authorization: `Bearer ${token}` } },
         )
         .then((res) => {
-          console.log(res.data.body);
           dispatch(userActions.setUser({ user: res.data.body }));
+          sessionStorage.setItem('firstName', res.data.body.firstName);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.error(err.message);
           navigate('/login');
         });
     }

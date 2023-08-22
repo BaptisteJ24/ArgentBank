@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import * as userActions from './../../features/user';
@@ -12,30 +12,50 @@ const EditNameForm = ({ displayForm }) => {
 
   const [newFirstName, setNewFirstName] = useState(firstName);
   const [newLastName, setNewLastName] = useState(lastName);
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    if (isValid) {
+      axios
+        .put(
+          `${baseUrl}/profile`,
+          {
+            firstName: newFirstName,
+            lastName: newLastName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            },
+          },
+        )
+        .then((res) => {
+          dispatch(userActions.updateUserSuccess({ user: res.data.body }));
+          sessionStorage.setItem('firstName', res.data.body.firstName);
+          displayForm(false);
+        })
+        .catch((err) => {
+          dispatch(userActions.updateUserFailure({ error: err.message }));
+        });
+    }
+  }, [isValid, newFirstName, newLastName, dispatch, displayForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    checkFormValidity();
+  };
 
-    axios
-      .put(
-        `${baseUrl}/profile`,
-        {
-          firstName: newFirstName,
-          lastName: newLastName,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
-        },
-      )
-      .then((res) => {
-        dispatch(userActions.updateUserSuccess({ user: res.data.body }));
-        displayForm(false);
-      })
-      .catch((err) => {
-        dispatch(userActions.updateUserFailure({ error: err.message }));
-      });
+  const checkFormValidity = () => {
+    if (
+      newFirstName.length < 2 ||
+      newFirstName.length > 20 ||
+      newLastName.length < 2 ||
+      newLastName.length > 30
+    ) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
   };
 
   const handleCancel = (e) => {
@@ -73,7 +93,7 @@ const EditNameForm = ({ displayForm }) => {
         <button className="login__button" type="reset" onClick={handleCancel}>
           Cancel
         </button>
-        <button className="login__button" type="submit" onClick={handleSubmit}>
+        <button className="login__button" type="submit">
           Submit
         </button>
       </div>
