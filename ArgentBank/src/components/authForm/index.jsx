@@ -21,9 +21,7 @@ const AuthForm = () => {
         password,
       })
       .then((res) => {
-        console.log(res.data.body);
         dispatch(authActions.loginSuccess({ token: res.data.body.token }));
-        sessionStorage.setItem('token', res.data.body.token);
         navigate('/profile');
       })
       .catch((err) => {

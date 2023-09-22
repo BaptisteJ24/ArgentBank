@@ -6,7 +6,7 @@ const authSlice = createSlice({
     isLoading: false,
     isAuth: false,
     error: null,
-    token: sessionStorage.getItem('token') || null,
+    token: null,
   },
   reducers: {
     loginStart: (state) => {

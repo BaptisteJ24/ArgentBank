@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import * as userActions from './../../features/user';
 import { baseUrl } from './../../utils/const';
-import { selectUser } from './../../utils/selector';
+import { selectUser, selectToken } from './../../utils/selector';
 import PropTypes from 'prop-types';
 
 const EditNameForm = ({ displayForm }) => {
   const dispatch = useDispatch();
   const { firstName, lastName } = useSelector(selectUser);
-
+  const token = useSelector(selectToken);
   const [newFirstName, setNewFirstName] = useState(firstName);
   const [newLastName, setNewLastName] = useState(lastName);
   const [isValid, setIsValid] = useState(false);
@@ -25,20 +25,19 @@ const EditNameForm = ({ displayForm }) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+              Authorization: `Bearer ${token}`,
             },
           },
         )
         .then((res) => {
           dispatch(userActions.updateUserSuccess({ user: res.data.body }));
-          sessionStorage.setItem('firstName', res.data.body.firstName);
           displayForm(false);
         })
         .catch((err) => {
           dispatch(userActions.updateUserFailure({ error: err.message }));
         });
     }
-  }, [isValid, newFirstName, newLastName, dispatch, displayForm]);
+  }, [isValid, newFirstName, newLastName, dispatch, displayForm, token]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

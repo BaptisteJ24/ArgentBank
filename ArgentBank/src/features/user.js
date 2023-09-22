@@ -5,9 +5,9 @@ const userSlice = createSlice({
   initialState: {
     user: {
       id: null,
-      firstName: sessionStorage.getItem('firstName') || null,
-      lastName: sessionStorage.getItem('lastName') || null,
-      email: sessionStorage.getItem('email') || null,
+      firstName: null,
+      lastName: null,
+      email: null,
     },
     error: null,
   },

@@ -27,7 +27,6 @@ const UserProfile = () => {
         )
         .then((res) => {
           dispatch(userActions.setUser({ user: res.data.body }));
-          sessionStorage.setItem('firstName', res.data.body.firstName);
         })
         .catch((err) => {
           console.error(err.message);
